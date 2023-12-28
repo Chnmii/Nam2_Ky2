@@ -1,0 +1,132 @@
+#include<bits/stdc++.h>
+#include<stdlib.h>
+#define ll long long
+
+using namespace std;
+
+int **a; // a[i][j]
+int n, m;
+
+void input(FILE *f){
+	fscanf(f,"%d %d\n", &m, &n);
+	a = (int**)malloc((m+5) * sizeof(int*));
+	
+	for(int i=0;i<m;i++){
+		a[i] = (int*)malloc((n+5)*sizeof(int));
+	}
+	
+	for(int i=0;i<m;i++){
+		for(int j=0;j<n;j++){
+			fscanf(f, "%d ", &a[i][j]);
+		}
+	}
+}
+void output(FILE *f){
+	for(int i=0;i<m;i++){
+		for(int j=0;j<n;j++){
+			fprintf(f, "%-5d", a[i][j]);
+		}
+		fprintf(f, "\n");	
+	}
+}
+void TongH_C(){
+	
+	for(int i=0;i<m;i++){
+		int tongH =0;
+		for(int j=0;j<n; j++){
+			tongH += a[i][j];
+		}
+		printf("Tong hang %d = %d\n", i+1, tongH);
+	}
+	for(int i=0;i<n;i++){
+		int tongC = 0;
+		for(int j=0;j<m; j++){
+			tongC += a[j][i];
+		}
+		printf("Tong cot %d = %d\n", i+1, tongC);
+	}
+}
+void Max_min(){
+	for(int i=0;i<m;i++){
+		int maxh = a[i][0], minh = a[i][0];
+		for(int j=0;j<n; j++){
+			maxh = maxh > a[i][j]? maxh : a[i][j];  // xet cac ptu trong hang neu > maxh thi gan maxh = no
+			minh = minh < a[i][j]? minh : a[i][j]; 
+		}
+		printf("Max hang %d = %d\n", i+1, maxh); // hang thu 1 tro di
+		printf("Min hang %d = %d\n", i+1, minh);
+	}
+	for(int j=0;j<n;j++){
+        int maxc = a[0][j], minc = a[0][j];
+        for(int i=0;i<m;i++){
+            maxc = maxc >a[i][j]? maxc : a[i][j];
+            minc = minc < a[i][j]? minc : a[i][j];
+        }
+        printf("max cot %d = %d\n",j+1,maxc);
+        printf("min cot %d = %d\n",j+1,minc);
+    }	
+}
+void chia3du1(){
+	//a[i][j]%2==0 && a[i][j] % 3 == 1 tong += a[i][j];
+	int tong =0, check=0;
+	for(int i=0;i<m;i++){
+		for(int j=0;j<n;j++)
+			if(a[i][j] % 2== 0 && a[i][j] % 3 == 1) tong += a[i][j], check =1;
+	}
+	if(!check) printf("Khong co so nao thoa man!\n");
+	else printf("Tong cac so thoa man dk la: %d", tong);
+}
+
+
+void chinh_phu(){
+	int chinh =0, phu =0;
+	for(int i=0; i<m ; i++){
+		for(int j=0;j<n;j++){
+			if(i==j) chinh+= a[i][j];  //chinh
+			if(i == n-j-1) phu += a[i][j]; //phu ( chay tu 1: i = n-j;)
+		}
+	}
+	printf("\nChinh = %d\t Phu = %d\n", chinh, phu);
+}
+
+void mtx(){
+	for(int i=0;i<m;i++){
+		for(int j=n-1;j>=0;j--){
+			printf("%-5d", a[j][i]);
+		}
+		printf("\n");
+	}
+}
+
+int main()
+{
+	
+	char name[25];
+	
+	printf("Nhap ten file: ");
+	gets(name);
+	
+	FILE *fi = fopen(name, "r");
+	FILE *fo = fopen("xuatmt.txt", "w");
+	
+	input(fi);
+	output(stdout);
+	
+	printf("Tong cac hang va cot la: \n");
+	TongH_C();
+	
+	printf("MAX MIN cua tung hang va cot la: \n");
+	Max_min();
+	
+	chinh_phu();
+	
+	chia3du1();
+	
+	printf("\nMa tran xoay: \n");	
+	mtx();
+	
+	fclose(fi);
+	fclose(fo);
+}
+
+
